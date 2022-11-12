@@ -34,10 +34,8 @@ exports.createSubscription = async (req, res) => {
 };
 
 exports.subscriptionStatus = async (req, res) => {
-  console.log(req);
   try {
     const user = await User.findById(req.auth._id);
-    console.log(user);
 
     const subscriptions = await stripe.subscriptions.list({
       customer: user.stripe_customer_id,
@@ -54,6 +52,35 @@ exports.subscriptionStatus = async (req, res) => {
     );
 
     res.json(updated);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.subscriptions = async (req, res) => {
+  try {
+    const user = await User.findById(req.auth._id);
+
+    const subscriptions = await stripe.subscriptions.list({
+      customer: user.stripe_customer_id,
+      status: "all",
+      expand: ["data.default_payment_method"],
+    });
+
+    res.json(subscriptions);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.customerPortal = async (req, res) => {
+  try {
+    const user = await User.findById(req.auth._id);
+    const portalSession = await stripe.billingPortal.sessions.create({
+      customer: user.stripe_customer_id,
+      return_url: process.env.STRIPE_SUCCESS_URL,
+    });
+    res.json(portalSession.url);
   } catch (err) {
     console.log(err);
   }

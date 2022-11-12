@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { UserContext } from "../../context";
 
-const PriceCard = ({ price, handleSubscription }) => {
+const PriceCard = ({ price, handleSubscription, userSubscriptions }) => {
   const [state] = useContext(UserContext);
 
   const dynamicDescription = () => {
@@ -58,7 +58,9 @@ const PriceCard = ({ price, handleSubscription }) => {
               onClick={(e) => handleSubscription(e, price)}
               className={`w-100 btn btn-lg ${buttonStyle()}`}
             >
-              {buttonText()}
+              {userSubscriptions && userSubscriptions.includes(price.id)
+              ? "Access plan"
+              : buttonText()}
             </button>
           </Link>
         </div>

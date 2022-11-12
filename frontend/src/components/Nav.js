@@ -22,13 +22,23 @@ const Nav = () => {
       </li>
 
       {state && state.token ? (
-        <>
-          <li className="nav-item">
-            <span onClick={logout} className="nav-link">
-              Logout
-            </span>
+        <div className="nav-item dropdown">
+          <li className="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+            {state.user.name}
           </li>
-        </>
+          <ul className="dropdown-menu">
+            <li className="nav-item dropdown-item">
+              <Link className="nav-link" to="/account">
+                Account
+              </Link>
+            </li>
+            <li className="nav-item dropdown-item">
+              <Link onClick={logout} className="nav-link">
+                Logout
+              </Link>
+            </li>
+          </ul>
+        </div>
       ) : (
         <>
           <li className="nav-item">

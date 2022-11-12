@@ -8,6 +8,10 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import StripeSuccess from "./pages/stripe-success";
 import StripeCancel from "./pages/stripe-cancel";
+import Account from "./pages/Account";
+import Basic from "./pages/plans/Basic";
+import Standard from "./pages/plans/Standard";
+import Premium from "./pages/plans/Premium";
 
 function App() {
   return (
@@ -24,6 +28,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/account" element={<Account />} />
+          <Route path="/basic" element={<Basic />} />
+          <Route path="/standard" element={<Standard />} />
+          <Route path="/premium" element={<Premium />} />
           <Route exact path="/stripe/success" element={<StripeSuccess />} />
           <Route exact path="/stripe/cancel" element={<StripeCancel />} />
         </Routes>

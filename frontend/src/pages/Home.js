@@ -8,12 +8,27 @@ import PriceCard from "./../components/cards/PriceCard";
 const Home = () => {
   const [state] = useContext(UserContext);
   const [prices, setPrices] = useState([]);
+  const [userSubscriptions, setUserSubscriptions] = useState([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchPrices();
   }, []);
+
+  useEffect(() => {
+    let result = [];
+    const check = () =>
+      state &&
+      state.user &&
+      state.user.subscriptions &&
+      state.user.subscriptions.map((sub) => {
+        result.push(sub.plan.id);
+      });
+    check();
+    setUserSubscriptions(result);
+  }, [state && state.user]);
+
   const fetchPrices = async () => {
     const { data } = await axios.get("/stripe/prices");
     console.log("prices get request", data);
@@ -22,6 +37,10 @@ const Home = () => {
 
   const handleClick = async (e, price) => {
     e.preventDefault();
+    if (userSubscriptions && userSubscriptions.includes(price.id)) {
+      navigate(`/${price.nickname.toLowerCase()}`);
+      return;
+    }
     // console.log("plan clicked", price.id);
     if (state && state.token) {
       const { data } = await axios.post("/stripe/create-subscription", {
@@ -50,6 +69,7 @@ const Home = () => {
               key={price.id}
               price={price}
               handleSubscription={handleClick}
+              userSubscriptions={userSubscriptions}
             />
           ))}
       </div>
