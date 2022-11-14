@@ -8,11 +8,13 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import StripeSuccess from "./pages/stripe-success";
 import StripeCancel from "./pages/stripe-cancel";
+import Question from "./pages/Question";
 
 function App() {
   return (
     <>
-      <BrowserRouter>
+      <Question />
+      {/* <BrowserRouter>
         <Nav />
         <Toaster
           position="buttom-right"
@@ -27,7 +29,7 @@ function App() {
           <Route exact path="/stripe/success" element={<StripeSuccess />} />
           <Route exact path="/stripe/cancel" element={<StripeCancel />} />
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter> */}
     </>
   );
 }
