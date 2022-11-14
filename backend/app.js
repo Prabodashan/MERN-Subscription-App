@@ -5,6 +5,11 @@ require("dotenv").config();
 
 const authRoute = require("./routes/auth");
 const stripeRoute = require("./routes/subs");
+const uploadRoute = require("./routes/FileRoutes");
+const questionRoute = require("./routes/QuestionsRoute");
+const packageQuestion = require("./routes/PackageQuestionRoute");
+const order = require("./routes/OrderRoute");
+const customerAnswers = require("./routes/CustomerAnswers");
 
 const app = express();
 
@@ -24,6 +29,11 @@ mongoose
 
 //autoload routes
 app.use("/api/auth", authRoute);
+app.use("/api/file", uploadRoute);
+app.use("/api/questions", questionRoute);
+app.use("/api/package-questions", packageQuestion);
+app.use("/api/order", order);
+app.use("/api/customer-answer", customerAnswers);
 app.use("/api/stripe", stripeRoute);
 
 //listen
