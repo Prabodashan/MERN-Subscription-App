@@ -1,12 +1,17 @@
 import React from "react";
 
-const Dropdown = ({ label, answers }) => {
-  console.log(answers);
+const Dropdown = ({ label, answers, value, name, handleChange }) => {
   return (
     <div className="form-group">
       <label>{label}</label>
-      <select className="form-select" aria-label="Default select example">
-        <option selected>-- Select --</option>
+      <select
+        name={name}
+        className="form-select"
+        aria-label="Default select example"
+        value={value}
+        onChange={(e) => handleChange(e)}
+      >
+        <option>-- Select --</option>
         {answers.map((option, index) => (
           <option key={index} value={option.text}>
             {option.text}

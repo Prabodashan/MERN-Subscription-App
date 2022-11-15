@@ -8,82 +8,73 @@ import ColorPicker from "./../element/ColorPicker";
 import axios from "axios";
 
 const Question = () => {
-  const questions = [];
+  const [questions, setQuestion] = useState([]);
+  const [answers, setAnswers] = useState([]);
 
   useEffect(() => {
     fetchQuestions();
+    if (localStorage.getItem("customerAnswer")) {
+      setAnswers(JSON.parse(localStorage.getItem("customerAnswer")));
+    }
   }, []);
 
   const fetchQuestions = async () => {
     const id = "01";
-    try{
-    const { data } = await axios.get("/package-questions/"+id);
-    console.log(data["packageQuestion"]["package"]["questions"])
-    data["packageQuestion"]["package"]["questions"].forEach((element) => {
-      const value = {
-        questionId: element.questionId,
-        questionDescription: element.questionDescription,
-        answerType: element.answerType,
-        answers: element.answers
-      };
-      questions.push(value)
-    });
-  } catch (err){
-    console.log(err)
-  }
-    // setQuestion(data);
+    try {
+      const { data } = await axios.get("/package-questions/" + id);
+      setQuestion(data["packageQuestion"]["package"]["questions"]);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  const input = [
-    {
-      questionId: "1",
-      questionDescription: "what is your name1?",
-      answerType: "text",
-      answers: [],
-    },
-    {
-      questionId: "2",
-      questionDescription: "Company Logo?",
-      answerType: "file",
-      answers: [],
-    },
-    {
-      questionId: "3",
-      questionDescription: "what is your logo color?",
-      answerType: "color",
-      answers: [],
-    },
-    {
-      questionId: "4",
-      questionDescription: "Gender",
-      answerType: "radio",
-      answers: [{ text: "Male" }, { text: "Female" }],
-    },
-    {
-      questionId: "5",
-      questionDescription: "domain ",
-      answerType: "select",
-      answers: [{ text: "Yes" }, { text: "No" }],
-    },
-    {
-      questionId: "6",
-      questionDescription: "what is your name6?",
-      answerType: "checkbox",
-      answers: [{ text: "Yes" }, { text: "No" }],
-    },
-    {
-      questionId: "7",
-      questionDescription: "what is your name7?",
-      answerType: "date",
-      answers: [],
-    },
-    {
-      questionId: "8",
-      questionDescription: "what is your name8?",
-      answerType: "text",
-      answers: [],
-    },
-  ];
+  const handleChange = (e) => {
+    setAnswers((prevState) => ({
+      ...prevState,
+      [e.target.name]: { questionId: e.target.name, answer: e.target.value },
+    }));
+
+    localStorage.setItem("customerAnswer", JSON.stringify(answers));
+  };
+
+  const onHandleChange = ({ questionId, answer }) => {
+    setAnswers((prevState) => ({
+      ...prevState,
+      [questionId]: { questionId, answer },
+    }));
+
+    localStorage.setItem("customerAnswer", JSON.stringify(answers));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const userAnswers = [];
+
+    for (var key in answers) {
+      var obj = answers[key];
+      userAnswers.push(obj);
+      // ...
+    }
+
+    const data = {
+      customerId: "customer 1",
+      packageId: "pakage 1",
+      orderId: "Order_" + Date.now().toString(),
+      packageType: "p1",
+      domainName: null,
+      answers: userAnswers,
+      domainPrice: null,
+      customerAnswers: null,
+      createdAt: Date("YYYY-MM-DD HH:mm:ss"),
+      createdBy: "customer 1",
+    };
+
+    await axios
+      .post("/order", data)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div className="container">
@@ -96,71 +87,115 @@ const Question = () => {
       <div className="row">
         <div className="col-md-9 mx-auto">
           <div className="myform form ">
-            <form>
+            <form onSubmit={handleSubmit}>
               <h5>Details about your website</h5>
-              {questions.map((e, index) => {
-                // console.log(e)
-                if (e.answerType === "text" || e.answerType === "date") {
-                  return (
-                    <TextBox
-                      key={index}
-                      label={e.questionDescription}
-                      type={e.answerType}
-                    />
-                  );
-                }
-                if (e.answerType === "radio") {
-                  return (
-                    <RadioInput
-                      key={index}
-                      label={e.questionDescription}
-                      name={e.questionId}
-                      type={e.answerType}
-                      answers={e.answers}
-                    />
-                  );
-                }
-                if (e.answerType === "file") {
-                  return (
-                    <MultipleFile
-                      key={index}
-                      label={e.questionDescription}
-                      type={e.answerType}
-                    />
-                  );
-                }
-                if (e.answerType === "select") {
-                  return (
-                    <Dropdown
-                      key={index}
-                      label={e.questionDescription}
-                      answers={e.answers}
-                    />
-                  );
-                }
-                if (e.answerType === "checkbox") {
-                  return (
-                    <CheckBox
-                      key={index}
-                      label={e.questionDescription}
-                      type={e.answerType}
-                      answers={e.answers}
-                    />
-                  );
-                }
-                if (e.answerType === "color") {
-                  return (
-                    <ColorPicker key={index} label={e.questionDescription} />
-                  );
-                }
-              })}
+              {questions &&
+                questions.map((e, index) => {
+                  // console.log(e);
+                  // console.log(answers.q1.answer);
+                  if (
+                    e.answerType === "text" ||
+                    e.answerType === "date" ||
+                    e.answerType === "email"
+                  ) {
+                    return (
+                      <TextBox
+                        key={index}
+                        name={e.questionId}
+                        label={e.questionDescription}
+                        type={e.answerType}
+                        handleChange={handleChange}
+                        value={
+                          answers[e.questionId]
+                            ? answers[e.questionId]["answer"]
+                            : ""
+                        }
+                      />
+                    );
+                  }
+                  if (e.answerType === "radio") {
+                    return (
+                      <RadioInput
+                        key={index}
+                        label={e.questionDescription}
+                        name={e.questionId}
+                        type={e.answerType}
+                        answers={e.answers}
+                        handleChange={handleChange}
+                        value={
+                          answers[e.questionId]
+                            ? answers[e.questionId]["answer"]
+                            : ""
+                        }
+                      />
+                    );
+                  }
+                  if (e.answerType === "file") {
+                    return (
+                      <MultipleFile
+                        key={index}
+                        label={e.questionDescription}
+                        type={e.answerType}
+                      />
+                    );
+                  }
+                  if (e.answerType === "select") {
+                    return (
+                      <Dropdown
+                        key={index}
+                        name={e.questionId}
+                        label={e.questionDescription}
+                        answers={e.answers}
+                        value={
+                          answers[e.questionId]
+                            ? answers[e.questionId]["answer"]
+                            : ""
+                        }
+                        handleChange={handleChange}
+                      />
+                    );
+                  }
+                  if (e.answerType === "checkbox") {
+                    return (
+                      <CheckBox
+                        key={index}
+                        name={e.questionId}
+                        label={e.questionDescription}
+                        type={e.answerType}
+                        answers={e.answers}
+                        handleChange={onHandleChange}
+                        value={
+                          answers[e.questionId]
+                            ? answers[e.questionId]["answer"]
+                            : ""
+                        }
+                      />
+                    );
+                  }
+                  if (e.answerType === "color") {
+                    return (
+                      <ColorPicker
+                        key={index}
+                        name={e.questionId}
+                        label={e.questionDescription}
+                        handleChange={handleChange}
+                        value={
+                          answers[e.questionId]
+                            ? answers[e.questionId]["answer"]
+                            : "ffffff"
+                        }
+                      />
+                    );
+                  }
+                })}
               <br />
               <div className="form-group">
                 <button type="submit" className="btn btn-primary send-button">
-                  Add Order
+                  submit
                 </button>
               </div>
             </form>
+            <br />
           </div>
         </div>
       </div>

@@ -1,6 +1,13 @@
 import React from "react";
 
-const RadioInput = ({ label, answers, name, type = "radio" }) => {
+const RadioInput = ({
+  label,
+  answers,
+  name,
+  type = "radio",
+  value,
+  handleChange,
+}) => {
   return (
     <div className="form-group">
       <label htmlFor={label}>{label}</label>
@@ -12,7 +19,9 @@ const RadioInput = ({ label, answers, name, type = "radio" }) => {
               className="form-check-input"
               type={type}
               value={answer.text}
+              checked={value === answer.text ? true : false}
               name={name}
+              onChange={(e) => handleChange(e)}
             />
             <label className="form-check-label" htmlFor="flexRadioDefault1">
               {answer.text}
