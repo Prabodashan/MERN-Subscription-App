@@ -20,6 +20,7 @@ exports.createOrder = async (req, res) => {
       domainName,
       domainPrice,
       customerAnswers,
+      answers,
       createdAt,
       createdBy,
     } = req.body;
@@ -32,7 +33,7 @@ exports.createOrder = async (req, res) => {
 
       const userAnswers = await new CustomerAnswersModel({
         customerId,
-        answers: [],
+        answers,
         createdAt,
         createdBy,
       }).save();
