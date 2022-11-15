@@ -10,6 +10,7 @@ const questionRoute = require("./routes/QuestionsRoute");
 const packageQuestion = require("./routes/PackageQuestionRoute");
 const order = require("./routes/OrderRoute");
 const customerAnswers = require("./routes/CustomerAnswers");
+const mailRouter = require("./routes/MailRouter");
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use("/api/package-questions", packageQuestion);
 app.use("/api/order", order);
 app.use("/api/customer-answer", customerAnswers);
 app.use("/api/stripe", stripeRoute);
+app.use("/api/mail", mailRouter);
 
 //listen
 const port = process.env.PORT || 3300;
