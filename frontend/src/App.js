@@ -12,11 +12,13 @@ import Account from "./pages/Account";
 import Basic from "./pages/plans/Basic";
 import Standard from "./pages/plans/Standard";
 import Premium from "./pages/plans/Premium";
+import Question from "./pages/Question";
 
 function App() {
   return (
     <>
-      <BrowserRouter>
+      <Question />
+      {/* <BrowserRouter>
         <Nav />
         <Toaster
           position="buttom-right"
@@ -35,7 +37,7 @@ function App() {
           <Route exact path="/stripe/success" element={<StripeSuccess />} />
           <Route exact path="/stripe/cancel" element={<StripeCancel />} />
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter> */}
     </>
   );
 }
