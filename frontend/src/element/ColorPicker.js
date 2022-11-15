@@ -1,15 +1,15 @@
 import React from "react";
 
-const ColorPicker = ({ label }) => {
+const ColorPicker = ({ label, name, handleChange }) => {
   return (
     <div className="form-group">
       <label>{label}</label>
       <input
         type="color"
-        class="form-control form-control-color"
-        id="exampleColorInput"
-        value="#563d7c"
+        name={name}
+        className="form-control form-control-color"
         title="Choose your color"
+        onChange={(e) => handleChange(e)}
       />
       <br />
     </div>

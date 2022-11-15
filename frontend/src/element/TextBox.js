@@ -1,10 +1,16 @@
 import React from "react";
 
-const TextBox = ({ label, type = "text" }) => {
+const TextBox = ({ label, type = "text", name, handleChange }) => {
   return (
     <div className="form-group">
       <label htmlFor={label}>{label}</label>
-      <input type={type} required className="form-control" />
+      <input
+        name={name}
+        type={type}
+        required
+        className="form-control"
+        onChange={(e) => handleChange(e)}
+      />
       <br />
     </div>
   );

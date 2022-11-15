@@ -20,8 +20,8 @@ exports.createPackageQuesitions = async (req, res) => {
 
 exports.getPackageQuesitionsBypackageId = async (req, res) => {
   const packageQuestion = await PackageQuestions.findOne({
-     packageId: req.params.id
-});
+    packageId: req.params.id,
+  });
   try {
     return res.json({
       packageQuestion,
