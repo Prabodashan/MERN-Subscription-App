@@ -1,12 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TextBox from "../element/TextBox";
 import Dropdown from "../element/Dropdown";
 import RadioInput from "../element/RadioInput";
 import MultipleFile from "./../element/MultipleFile";
 import CheckBox from "../element/CheckBox";
 import ColorPicker from "./../element/ColorPicker";
+import axios from "axios";
 
 const Question = () => {
+  const questions = [];
+
+  useEffect(() => {
+    fetchQuestions();
+  }, []);
+
+  const fetchQuestions = async () => {
+    const id = "01";
+    try{
+    const { data } = await axios.get("/package-questions/"+id);
+    console.log(data["packageQuestion"]["package"]["questions"])
+    data["packageQuestion"]["package"]["questions"].forEach((element) => {
+      const value = {
+        questionId: element.questionId,
+        questionDescription: element.questionDescription,
+        answerType: element.answerType,
+        answers: element.answers
+      };
+      questions.push(value)
+    });
+  } catch (err){
+    console.log(err)
+  }
+    // setQuestion(data);
+  };
+
   const input = [
     {
       questionId: "1",
@@ -71,7 +98,7 @@ const Question = () => {
           <div className="myform form ">
             <form>
               <h5>Details about your website</h5>
-              {input.map((e, index) => {
+              {questions.map((e, index) => {
                 // console.log(e)
                 if (e.answerType === "text" || e.answerType === "date") {
                   return (

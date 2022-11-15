@@ -1,4 +1,4 @@
-const customerAnswers = require("../models/customerAnswers");
+const CustomerAnswersModel = require("../models/customerAnswers");
 const Order = require("../models/order");
 const { createCustomerAnswers } = require("./CustomerAnswersController");
 exports.getOrders = async (req, res) => {
@@ -23,39 +23,49 @@ exports.createOrder = async (req, res) => {
       createdAt,
       createdBy,
     } = req.body;
+    if (!domainName) {
+      const exists = await orderAlreadyExists(customerId, packageId);
 
-    const exists = await orderAlreadyExists(customerId, packageId);
+      if (exists) {
+        return res.status(409).json({ message: "Order Already exist" });
+      }
 
-    if (exists) {
-      return res.status(409).json({ message: "Order Already exist" });
+      const userAnswers = await new CustomerAnswersModel({
+        customerId,
+        answers: [],
+        createdAt,
+        createdBy,
+      }).save();
+
+      console.log(userAnswers._id, "here");
+      const order = await new Order({
+        orderId,
+        customerId,
+        packageId,
+        packageType,
+        domainName,
+        domainPrice,
+        customerAnswers: userAnswers._id.toString(),
+        createdAt,
+        createdBy,
+      }).save();
+
+      return res.json({ order });
+    } else {
+      const order = await new Order({
+        orderId,
+        customerId,
+        packageId,
+        packageType,
+        domainName,
+        domainPrice,
+        customerAnswers,
+        createdAt,
+        createdBy,
+      }).save();
+
+      return res.json({ order });
     }
-    const data = {
-      body: {
-        customerId: customerId,
-        answers: customerAnswers,
-        createdAt: createdAt,
-        createdBy: createdBy,
-      },
-    };
-    const result = await createCustomerAnswers(data);
-    console.log(result, "here");
-    if(result){
-        const order = await new Order({
-            orderId,
-            customerId,
-            packageId,
-            packageType,
-            domainName,
-            domainPrice,
-            customerAnswers: result._id,
-            createdAt,
-            createdBy,
-          }).save();
-      
-          return res.json({ order });
-    }
-    console.log("chaagi not found")
-
   } catch (error) {
     console.log(error);
   }
