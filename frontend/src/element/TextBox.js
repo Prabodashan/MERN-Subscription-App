@@ -1,6 +1,6 @@
 import React from "react";
 
-const TextBox = ({ label, type = "text", name, handleChange }) => {
+const TextBox = ({ label, type = "text", name, value, handleChange }) => {
   return (
     <div className="form-group">
       <label htmlFor={label}>{label}</label>
@@ -10,6 +10,7 @@ const TextBox = ({ label, type = "text", name, handleChange }) => {
         required
         className="form-control"
         onChange={(e) => handleChange(e)}
+        value={value}
       />
       <br />
     </div>

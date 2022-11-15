@@ -13,38 +13,22 @@ const Question = () => {
 
   useEffect(() => {
     fetchQuestions();
-
-    setAnswers(JSON.parse(localStorage.getItem("customerAnswer")));
+    if (localStorage.getItem("customerAnswer")) {
+      setAnswers(JSON.parse(localStorage.getItem("customerAnswer")));
+    }
   }, []);
-
-  // useEffect(() => {
-  //   localStorage.setItem("customerAnswer", JSON.stringify(answers));
-  // }, [answers]);
 
   const fetchQuestions = async () => {
     const id = "01";
     try {
       const { data } = await axios.get("/package-questions/" + id);
-      // console.log(data);
-      // data["packageQuestion"]["package"]["questions"].forEach((element) => {
-      //   const value = {
-      //     questionId: element.questionId,
-      //     questionDescription: element.questionDescription,
-      //     answerType: element.answerType,
-      //     answers: element.answers,
-      //   };
-      //   questions.push(value);
-      // });
-
       setQuestion(data["packageQuestion"]["package"]["questions"]);
     } catch (err) {
       console.log(err);
     }
-    // setQuestion(data);
   };
 
   const handleChange = (e) => {
-    // setAnswers([...answers, { questionId: questionId, answer: answer }]);
     setAnswers((prevState) => ({
       ...prevState,
       [e.target.name]: { questionId: e.target.name, answer: e.target.value },
@@ -54,8 +38,6 @@ const Question = () => {
   };
 
   const onHandleChange = ({ questionId, answer }) => {
-    // console.log(questionId);
-    // setAnswers([...answers, { questionId: questionId, answer: answer }]);
     setAnswers((prevState) => ({
       ...prevState,
       [questionId]: { questionId, answer },
@@ -64,7 +46,35 @@ const Question = () => {
     localStorage.setItem("customerAnswer", JSON.stringify(answers));
   };
 
-  console.log(answers);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const userAnswers = [];
+
+    for (var key in answers) {
+      var obj = answers[key];
+      userAnswers.push(obj);
+      // ...
+    }
+
+    const data = {
+      customerId: "customer 1",
+      packageId: "pakage 1",
+      orderId: "Order_" + Date.now().toString(),
+      packageType: "p1",
+      domainName: null,
+      answers: userAnswers,
+      domainPrice: null,
+      customerAnswers: null,
+      createdAt: Date("YYYY-MM-DD HH:mm:ss"),
+      createdBy: "customer 1",
+    };
+
+    await axios
+      .post("/order", data)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div className="container">
@@ -77,11 +87,12 @@ const Question = () => {
       <div className="row">
         <div className="col-md-9 mx-auto">
           <div className="myform form ">
-            <form>
+            <form onSubmit={handleSubmit}>
               <h5>Details about your website</h5>
               {questions &&
                 questions.map((e, index) => {
                   // console.log(e);
+                  // console.log(answers.q1.answer);
                   if (
                     e.answerType === "text" ||
                     e.answerType === "date" ||
@@ -94,6 +105,11 @@ const Question = () => {
                         label={e.questionDescription}
                         type={e.answerType}
                         handleChange={handleChange}
+                        value={
+                          answers[e.questionId]
+                            ? answers[e.questionId]["answer"]
+                            : ""
+                        }
                       />
                     );
                   }
@@ -106,6 +122,11 @@ const Question = () => {
                         type={e.answerType}
                         answers={e.answers}
                         handleChange={handleChange}
+                        value={
+                          answers[e.questionId]
+                            ? answers[e.questionId]["answer"]
+                            : ""
+                        }
                       />
                     );
                   }
@@ -125,6 +146,11 @@ const Question = () => {
                         name={e.questionId}
                         label={e.questionDescription}
                         answers={e.answers}
+                        value={
+                          answers[e.questionId]
+                            ? answers[e.questionId]["answer"]
+                            : ""
+                        }
                         handleChange={handleChange}
                       />
                     );
@@ -138,6 +164,11 @@ const Question = () => {
                         type={e.answerType}
                         answers={e.answers}
                         handleChange={onHandleChange}
+                        value={
+                          answers[e.questionId]
+                            ? answers[e.questionId]["answer"]
+                            : ""
+                        }
                       />
                     );
                   }
@@ -148,6 +179,11 @@ const Question = () => {
                         name={e.questionId}
                         label={e.questionDescription}
                         handleChange={handleChange}
+                        value={
+                          answers[e.questionId]
+                            ? answers[e.questionId]["answer"]
+                            : "ffffff"
+                        }
                       />
                     );
                   }
@@ -155,10 +191,11 @@ const Question = () => {
               <br />
               <div className="form-group">
                 <button type="submit" className="btn btn-primary send-button">
-                  Add Order
+                  submit
                 </button>
               </div>
             </form>
+            <br />
           </div>
         </div>
       </div>

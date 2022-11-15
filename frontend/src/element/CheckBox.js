@@ -4,6 +4,7 @@ const CheckBox = ({
   label,
   answers,
   name,
+  value,
   type = "checkbox",
   handleChange,
 }) => {
@@ -19,6 +20,15 @@ const CheckBox = ({
 
     // handleChange({ questionId: name, answer: check });
   };
+
+  // const checkOrNOt = (v) => {
+  //   value.forEach((element) => {
+  //     if (element === v) {
+  //       return setChecked(true);
+  //     }
+  //   });
+  //   return setChecked(false);
+  // };
 
   useEffect(() => {
     handleChange({ questionId: name, answer: check });
@@ -36,8 +46,7 @@ const CheckBox = ({
               type={type}
               value={answer.text}
               name={name}
-              onClick={(e) => onClickCheck(e)}
-              // onChange={(e) => handleChange(e)}
+              onChange={(e) => onClickCheck(e)}
             />
             <label className="form-check-label" htmlFor="flexRadioDefault1">
               {answer.text}

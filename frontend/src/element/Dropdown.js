@@ -1,6 +1,6 @@
 import React from "react";
 
-const Dropdown = ({ label, answers, name, handleChange }) => {
+const Dropdown = ({ label, answers, value, name, handleChange }) => {
   return (
     <div className="form-group">
       <label>{label}</label>
@@ -8,6 +8,7 @@ const Dropdown = ({ label, answers, name, handleChange }) => {
         name={name}
         className="form-select"
         aria-label="Default select example"
+        value={value}
         onChange={(e) => handleChange(e)}
       >
         <option>-- Select --</option>
