@@ -11,6 +11,10 @@ const packageQuestion = require("./routes/PackageQuestionRoute");
 const order = require("./routes/OrderRoute");
 const customerAnswers = require("./routes/CustomerAnswers");
 const mailRouter = require("./routes/MailRouter");
+const designerRouter = require("./routes/DesignerRoute");
+const ticketRouter = require("./routes/TicketRoute");
+
+
 
 const app = express();
 
@@ -37,6 +41,9 @@ app.use("/api/order", order);
 app.use("/api/customer-answer", customerAnswers);
 app.use("/api/stripe", stripeRoute);
 app.use("/api/mail", mailRouter);
+app.use("/api/designer", designerRouter);
+app.use("/api/ticket", ticketRouter);
+
 
 //listen
 const port = process.env.PORT || 3300;
