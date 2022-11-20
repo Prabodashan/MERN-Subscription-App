@@ -12,6 +12,7 @@ const order = require("./routes/OrderRoute");
 const customerAnswers = require("./routes/CustomerAnswers");
 const mailRouter = require("./routes/MailRouter");
 const chatRoute = require("./routes/ChatRoute");
+const notificationRoute = require("./routes/NotificationRoute");
 
 const app = express();
 
@@ -39,7 +40,7 @@ app.use("/api/customer-answer", customerAnswers);
 app.use("/api/stripe", stripeRoute);
 app.use("/api/mail", mailRouter);
 app.use("/api/chat", chatRoute);
-// app.use("/api/notification", mailRouter);
+app.use("/api/notification", notificationRoute);
 
 //listen
 const port = process.env.PORT || 3300;
