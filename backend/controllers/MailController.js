@@ -14,7 +14,7 @@ const sendMail = (req, res) => {
       {
         From: {
           Email: "redapplenetworkdeveloper@gmail.com",
-          Name: "Asela",
+          Name: "kymox",
         },
         To: [
           {
