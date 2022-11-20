@@ -5,7 +5,6 @@ import axios from "axios";
 import moment from "moment";
 
 import { UserContext } from "../context";
-import { Navigate } from "react-router-dom";
 
 const Account = () => {
   const [state, setState] = useContext(UserContext);

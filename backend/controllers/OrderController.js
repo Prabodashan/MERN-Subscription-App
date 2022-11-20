@@ -1,6 +1,5 @@
 const CustomerAnswersModel = require("../models/customerAnswers");
 const OrderModel = require("../models/order");
-const { createCustomerAnswers } = require("./CustomerAnswersController");
 exports.getOrders = async (req, res) => {
   try {
     const orders = await OrderModel.find();

@@ -45,6 +45,7 @@ const Home = () => {
     if (state && state.token) {
       const { data } = await axios.post("/stripe/create-subscription", {
         priceId: price.id,
+        mode: price.type === "recurring" ? "subscription" : "payment",
         // user: state.user,
       });
       window.open(data);

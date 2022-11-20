@@ -1,22 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+
+import { UserContext } from "../context";
+
 import TextBox from "../element/TextBox";
 import Dropdown from "../element/Dropdown";
 import RadioInput from "../element/RadioInput";
 import MultipleFile from "./../element/MultipleFile";
 import CheckBox from "../element/CheckBox";
 import ColorPicker from "./../element/ColorPicker";
-import axios from "axios";
 
 const Question = () => {
+  const [state] = useContext(UserContext);
   const [questions, setQuestion] = useState([]);
   const [answers, setAnswers] = useState([]);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    fetchQuestions();
-    if (localStorage.getItem("customerAnswer")) {
-      setAnswers(JSON.parse(localStorage.getItem("customerAnswer")));
+    if (state && state.token) {
+      if (localStorage.getItem("customerAnswer")) {
+        setAnswers(JSON.parse(localStorage.getItem("customerAnswer")));
+      }
+      fetchQuestions();
+    } else {
+      // navigate("/login");
     }
-  }, []);
+  }, [state && state.token]);
 
   const fetchQuestions = async () => {
     const id = "01";
@@ -58,8 +70,8 @@ const Question = () => {
     }
 
     const data = {
-      customerId: "customer 1",
-      packageId: "pakage 1",
+      customerId: state.user._id,
+      packageId: state.user.subscriptions[0].plan.id,
       orderId: "Order_" + Date.now().toString(),
       packageType: "p1",
       domainName: null,
@@ -67,12 +79,20 @@ const Question = () => {
       domainPrice: null,
       customerAnswers: null,
       createdAt: Date("YYYY-MM-DD HH:mm:ss"),
-      createdBy: "customer 1",
+      createdBy: state.user.name,
     };
+
+    // console.log(state.user.subscriptions[0].plan.id);
 
     await axios
       .post("/order", data)
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+        toast.success(`Successfully added data`);
+      })
+      .then(() => {
+        navigate("/account");
+      })
       .catch((err) => console.log(err));
   };
 
