@@ -38,7 +38,6 @@ exports.createOrder = async (req, res) => {
         createdBy,
       }).save();
 
-      console.log(userAnswers._id, "here");
       const order = await new OrderModel({
         orderId,
         customerId,
