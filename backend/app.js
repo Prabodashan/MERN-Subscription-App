@@ -16,6 +16,9 @@ const notificationRoute = require("./routes/NotificationRoute");
 const packageVarientRoute = require("./routes/PackageVarientRoute");
 const packageCriteriaRoute = require("./routes/PackageCriteriaRoute");
 const packageRoute = require("./routes/PackageRoute");
+const customerSubscriptionRoute = require("./routes/CustomerSubscriptionRoute");
+const packageInvoicesRoute = require("./routes/PackageInvoicesRoute");
+const domainInvoicesRoute = require("./routes/DomainInvoicesRoute");
 
 const app = express();
 
@@ -47,6 +50,10 @@ app.use("/api/notification", notificationRoute);
 app.use("/api/package-varient", packageVarientRoute);
 app.use("/api/package-criteria", packageCriteriaRoute);
 app.use("/api/package", packageRoute);
+app.use("/api/customer-subscription", customerSubscriptionRoute);
+app.use("/api/package-invoices", packageInvoicesRoute);
+app.use("/api/domain-invoices", domainInvoicesRoute);
+
 
 //listen
 const port = process.env.PORT || 3300;
