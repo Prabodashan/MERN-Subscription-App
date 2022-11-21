@@ -11,8 +11,7 @@ const packageSchema = mongoose.Schema({
   },
   packageVariants: [
     {
-      packageVariantId: String,
-      required: true,
+      packageVariantId: { type: String, required: true },
     },
   ],
   packageFeatures: [

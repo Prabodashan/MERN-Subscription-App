@@ -11,6 +11,7 @@ exports.getPackageVarients = async (req, res) => {
 
 exports.createPackageVarient = async (req, res) => {
   const {
+    packageName,
     packageType,
     initialPrice,
     discountedPrice,
@@ -18,9 +19,21 @@ exports.createPackageVarient = async (req, res) => {
     createdBy,
     createdAt,
   } = req.body;
+
+  const planAmount = isDiscounted ? discountedPrice : initialPrice;
+
   try {
+    const product = await createProduct(packageName);
+    const plan = await createPlan(
+      packageName,
+      planAmount,
+      packageType,
+      product.id
+    );
+
     const packageVarients = await packageVarientModel({
       packageType,
+      stipePackagePrice: plan.id,
       initialPrice,
       discountedPrice,
       isDiscounted,
@@ -66,15 +79,33 @@ exports.updatePackageVarients = async (req, res) => {
 };
 
 exports.deletePackageVarientById = async (req, res) => {
-    try {
-        const packageCriteria = await packageVarientModel.findByIdAndDelete(
-          req.params.id
-        );
-        if (packageCriteria) {
-          return res.json({ message: "Package Varient deleted successfully" });
-        }
-        return res.status(404).json({ message: "Package Varient not found" });
-      } catch (error) {
-        console.log(error);
-      }
-}
+  try {
+    const packageCriteria = await packageVarientModel.findByIdAndDelete(
+      req.params.id
+    );
+    if (packageCriteria) {
+      return res.json({ message: "Package Varient deleted successfully" });
+    }
+    return res.status(404).json({ message: "Package Varient not found" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+createProduct = async (req, res) => {
+  const product = await stripe.products.create({
+    name: req,
+  });
+  return product;
+};
+
+createPlan = async (packageName, planAmount, planInterval, productId) => {
+  const plan = await stripe.plans.create({
+    nickname: req.packageName,
+    amount: req.planAmount * 100,
+    interval: req.planInterval,
+    product: req.productId,
+    currency: "USD",
+  });
+  return plan;
+};

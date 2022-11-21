@@ -5,6 +5,10 @@ const packageVariantsSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  stipePackagePrice: {
+    type: String,
+    required: true,
+  },
   initialPrice: {
     type: Number,
     required: true,

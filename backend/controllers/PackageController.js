@@ -47,6 +47,15 @@ exports.updatePackage = async (req, res) => {
     if (!packageExists) {
       return res.status(404).json({ message: "Package does not exist" });
     }
+    const package = await packageModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: req.body,
+      },
+      {
+        new: false,
+      }
+    );
 
     return res.json({ packageExists });
   } catch (error) {
