@@ -11,11 +11,11 @@ const CheckBox = ({
   const [check, setCheck] = useState([]);
 
   const onClickCheck = (e) => {
-    const value = e.target.value;
+    const selected = e.target.value;
     if (e.target.checked) {
-      setCheck([...check, value]);
+      setCheck([...check, selected]);
     } else {
-      setCheck(check.filter((item) => item !== value));
+      setCheck(check.filter((item) => item !== selected));
     }
 
     // handleChange({ questionId: name, answer: check });
@@ -29,6 +29,10 @@ const CheckBox = ({
   //   });
   //   return setChecked(false);
   // };
+
+  useEffect(()=> {
+    setCheck(value);
+  },[])
 
   useEffect(() => {
     handleChange({ questionId: name, answer: check });
@@ -46,6 +50,7 @@ const CheckBox = ({
               type={type}
               value={answer.text}
               name={name}
+              checked={check.includes(answer.text)}
               onChange={(e) => onClickCheck(e)}
             />
             <label className="form-check-label" htmlFor="flexRadioDefault1">

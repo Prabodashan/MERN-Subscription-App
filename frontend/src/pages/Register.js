@@ -26,6 +26,18 @@ const Register = () => {
         password,
       });
 
+      const { mailData } = await axios.post("/mail", {
+        name: data.user.name,
+        email: data.user.email,
+        subject: "Welcome to kymox",
+        textPart: `Hi, ${data.user.name}. Thank you!
+        Thanks for signing up. Welcome to our community. We are happy to have you on board. Why don’t you follow us on [social media] as well?
+        kymox`,
+        htmlPart: "",
+        customID: "",
+      });
+      console.log(mailData);
+
       if (data.error) {
         toast.error(data.error);
       } else {

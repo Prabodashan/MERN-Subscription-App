@@ -17,8 +17,7 @@ import Question from "./pages/Question";
 function App() {
   return (
     <>
-      <Question />
-      {/* <BrowserRouter>
+      <BrowserRouter>
         <Nav />
         <Toaster
           position="buttom-right"
@@ -31,13 +30,14 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/account" element={<Account />} />
-          <Route path="/basic" element={<Basic />} />
+          <Route path="/question" element={<Question />} />
+          {/* <Route path="/basic" element={<Basic />} />
           <Route path="/standard" element={<Standard />} />
-          <Route path="/premium" element={<Premium />} />
+          <Route path="/premium" element={<Premium />} /> */}
           <Route exact path="/stripe/success" element={<StripeSuccess />} />
           <Route exact path="/stripe/cancel" element={<StripeCancel />} />
         </Routes>
-      </BrowserRouter> */}
+      </BrowserRouter>
     </>
   );
 }

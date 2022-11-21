@@ -17,6 +17,19 @@ const StripeSuccess = () => {
         //     "Bearer " + JSON.parse(localStorage.getItem("auth")).token, //the token is a variable which holds the token
         // },
       });
+
+      const { mailData } = await axios.post("/mail", {
+        name: state.user.name,
+        email: state.user.email,
+        subject: "Purchase Successful",
+        textPart: `Hi, ${state.user.name}. Thank you for your recent purchase. We are honored to gain you as a customer and hope to serve you for a long time. ${data.subscriptions[0].plan.nickname}`,
+        htmlPart: "",
+        customID: "",
+      });
+      console.log(mailData);
+
+      
+
       console.log("SUBSCRIPTION STATUS => ", data);
       if (data && data.length === 0) {
         navigate("/");
@@ -28,7 +41,7 @@ const StripeSuccess = () => {
         // update user in context
         setState(auth);
         setTimeout(() => {
-          navigate("/account");
+          navigate("/question");
         }, 1000);
       }
     };
