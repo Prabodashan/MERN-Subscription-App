@@ -8,11 +8,13 @@ const stripeRoute = require("./routes/subs");
 const uploadRoute = require("./routes/FileRoutes");
 const questionRoute = require("./routes/QuestionsRoute");
 const packageQuestion = require("./routes/PackageQuestionRoute");
-const order = require("./routes/OrderRoute");
-const customerAnswers = require("./routes/CustomerAnswers");
+const orderRoute = require("./routes/OrderRoute");
+const customerAnswersRoute = require("./routes/CustomerAnswers");
 const mailRouter = require("./routes/MailRouter");
 const chatRoute = require("./routes/ChatRoute");
 const notificationRoute = require("./routes/NotificationRoute");
+const packageVarientRoute = require("./routes/PackageVarientRoute");
+const packageCriteriaRoute = require("./routes/PackageCriteriaRoute");
 
 const app = express();
 
@@ -35,12 +37,14 @@ app.use("/api/auth", authRoute);
 app.use("/api/file", uploadRoute);
 app.use("/api/questions", questionRoute);
 app.use("/api/package-questions", packageQuestion);
-app.use("/api/order", order);
-app.use("/api/customer-answer", customerAnswers);
+app.use("/api/order", orderRoute);
+app.use("/api/customer-answer", customerAnswersRoute);
 app.use("/api/stripe", stripeRoute);
 app.use("/api/mail", mailRouter);
 app.use("/api/chat", chatRoute);
 app.use("/api/notification", notificationRoute);
+app.use("/api/package-varient", packageVarientRoute);
+app.use("/api/package-criteria", packageCriteriaRoute);
 
 //listen
 const port = process.env.PORT || 3300;
