@@ -13,6 +13,9 @@ const customerAnswers = require("./routes/CustomerAnswers");
 const mailRouter = require("./routes/MailRouter");
 const chatRoute = require("./routes/ChatRoute");
 const notificationRoute = require("./routes/NotificationRoute");
+const customerSubscriptionRoute = require("./routes/CustomerSubscriptionRoute");
+const packageInvoicesRoute = require("./routes/PackageInvoicesRoute");
+const domainInvoicesRoute = require("./routes/DomainInvoicesRoute");
 
 const app = express();
 
@@ -41,6 +44,10 @@ app.use("/api/stripe", stripeRoute);
 app.use("/api/mail", mailRouter);
 app.use("/api/chat", chatRoute);
 app.use("/api/notification", notificationRoute);
+app.use("/api/customer-subscription", customerSubscriptionRoute);
+app.use("/api/package-invoices", packageInvoicesRoute);
+app.use("/api/domain-invoices", domainInvoicesRoute);
+
 
 //listen
 const port = process.env.PORT || 3300;
