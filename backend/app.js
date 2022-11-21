@@ -15,6 +15,7 @@ const chatRoute = require("./routes/ChatRoute");
 const notificationRoute = require("./routes/NotificationRoute");
 const packageVarientRoute = require("./routes/PackageVarientRoute");
 const packageCriteriaRoute = require("./routes/PackageCriteriaRoute");
+const packageRoute = require("./routes/PackageRoute");
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.use("/api/chat", chatRoute);
 app.use("/api/notification", notificationRoute);
 app.use("/api/package-varient", packageVarientRoute);
 app.use("/api/package-criteria", packageCriteriaRoute);
+app.use("/api/package", packageRoute);
 
 //listen
 const port = process.env.PORT || 3300;
