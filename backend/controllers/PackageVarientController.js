@@ -1,3 +1,5 @@
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
 const packageVarientModel = require("../models/packageVarients");
 
 exports.getPackageVarients = async (req, res) => {
@@ -92,20 +94,38 @@ exports.deletePackageVarientById = async (req, res) => {
   }
 };
 
-createProduct = async (req, res) => {
+createProduct = async (packageName) => {
   const product = await stripe.products.create({
-    name: req,
+    name: packageName,
   });
   return product;
 };
 
 createPlan = async (packageName, planAmount, planInterval, productId) => {
-  const plan = await stripe.plans.create({
-    nickname: req.packageName,
-    amount: req.planAmount * 100,
-    interval: req.planInterval,
-    product: req.productId,
-    currency: "USD",
-  });
-  return plan;
+  // const plan = await stripe.plans.create({
+  //   nickname: packageName,
+  //   amount: planAmount * 100,
+  //   interval: planInterval,
+  //   product: productId,
+  //   currency: "USD",
+  // });
+
+  if (planInterval === "onetime") {
+    const price = await stripe.prices.create({
+      nickname: packageName,
+      unit_amount: planAmount * 100,
+      currency: "usd",
+      product: productId,
+    });
+    return price;
+  } else {
+    const price = await stripe.prices.create({
+      nickname: packageName,
+      unit_amount: planAmount * 100,
+      currency: "usd",
+      recurring: { interval: planInterval },
+      product: productId,
+    });
+    return price;
+  }
 };

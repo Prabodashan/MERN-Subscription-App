@@ -3,13 +3,13 @@ const Designer = require("../models/designer");
 exports.createDesigner = async (req, res) => {
   const exists = await designerExists(req.body.DesignerId);
   if (exists) {
-    return res.status(409).json({ message: "Designer ID Alread Exist" });
+    return res.status(409).json({ message: "Designer ID Already Exist" });
   }
 
   try {
     const {
       designerId,
-      fristName,
+      firstName,
       lastName,
       emailAddress,
       phoneNumber,
@@ -19,7 +19,7 @@ exports.createDesigner = async (req, res) => {
 
     const designer = await new Designer({
       designerId,
-      fristName,
+      firstName,
       lastName,
       emailAddress,
       phoneNumber,
@@ -35,9 +35,8 @@ exports.createDesigner = async (req, res) => {
   }
 };
 
-
 exports.getAllDesigners = async (req, res) => {
-  console.log("get all")
+  console.log("get all");
   const designers = await Designer.find();
   try {
     return res.json({
@@ -49,7 +48,7 @@ exports.getAllDesigners = async (req, res) => {
 };
 
 exports.getDesignerById = async (req, res) => {
-  console.log("object")
+  console.log("object");
   const exists = await designerExists(req.params.id);
   if (!exists) {
     return res.status(404).json({ message: "Designer does not exist" });

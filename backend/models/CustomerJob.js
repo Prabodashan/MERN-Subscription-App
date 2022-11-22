@@ -1,25 +1,25 @@
 const mongoose = require("mongoose");
 
 // Questions
-const designerSchema = mongoose.Schema({
+const customerJobSchema = mongoose.Schema({
+  customerJobId: {
+    type: String,
+    required: true,
+  },
+  orderId: {
+    type: String,
+    required: true,
+  },
+  customerWebsiteId: {
+    type: String,
+    required: true,
+  },
   designerId: {
     type: String,
     required: true,
   },
-  firstName: {
+  customerJobStatus: {
     type: String,
-    required: true,
-  },
-  lastName: {
-    type: String,
-    required: true,
-  },
-  emailAddress: {
-    type: String,
-    required: true,
-  },
-  phoneNumber: {
-    type: Number,
     required: true,
   },
   createdAt: {
@@ -32,4 +32,4 @@ const designerSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Designer", designerSchema);
+module.exports = mongoose.model("CustomerJob", customerJobSchema);
