@@ -74,22 +74,22 @@ exports.createOrder = async (req, res) => {
 
 exports.updateOrderStatus = async (req, res) => {
   const { status, createdBy, createdAt } = req.body;
-  try{
-  const order = await OrderModel.find({
-    orderId: req.params.id,
-    packageId: req.body.packageId,
-  });
-  if (order.length > 0) {
-    const updatedOrder = await OrderModel.updateOne(
-      { _id: order[0]._id },
-      { status: status, createdAt: createdAt, createdBy: createdBy }
-    );
-    return res.status(200).json({ updatedOrder });
-  } else {
-    return res.status(404).json({ error: "Order Not Found" });
-  }}
-  catch (error) {
-    console.log(error)
+  try {
+    const order = await OrderModel.find({
+      orderId: req.params.id,
+      packageId: req.body.packageId,
+    });
+    if (order.length > 0) {
+      const updatedOrder = await OrderModel.updateOne(
+        { _id: order[0]._id },
+        { status: status, createdAt: createdAt, createdBy: createdBy }
+      );
+      return res.status(200).json({ updatedOrder });
+    } else {
+      return res.status(404).json({ error: "Order Not Found" });
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -106,18 +106,23 @@ exports.getOrderById = async (req, res) => {
 };
 
 exports.getOrderByCustomerIdAndPackageId = async (req, res) => {
-  console.log(req.params.customerId,req.params.packageId)
-  try{
-    const order = await OrderModel.find({customerId: req.params.customerId, packageId: req.params.packageId });
-    if(order.length > 0){
+  console.log(req.params.customerId, req.params.packageId);
+  try {
+    const order = await OrderModel.find({
+      customerId: req.params.customerId,
+      packageId: req.params.packageId,
+    });
+    if (order.length > 0) {
       return res.status(200).json(order);
     } else {
-      return res.status(404).json({message: "No Order Exists for the Customer for the specified package"})
+      return res.status(404).json({
+        message: "No Order Exists for the Customer for the specified package",
+      });
     }
-  }catch (error) {
-    console.log(error)
+  } catch (error) {
+    console.log(error);
   }
-}
+};
 
 orderAlreadyExists = async (reqCustomerId, reqPackageId) => {
   const value = await OrderModel.findOne({
@@ -135,4 +140,15 @@ orderAlreadyExists = async (reqCustomerId, reqPackageId) => {
   // } else {
   //   return false;
   // }
+};
+
+exports.deleteOrder = async (req, res) => {
+  const order = await OrderModel.deleteOne({ orderId: req.params.id });
+  try {
+    return res.json({
+      order,
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
