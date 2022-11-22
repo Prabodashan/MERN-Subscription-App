@@ -35,9 +35,8 @@ exports.createDesigner = async (req, res) => {
   }
 };
 
-
 exports.getAllDesigners = async (req, res) => {
-  console.log("get all")
+  console.log("get all");
   const designers = await Designer.find();
   try {
     return res.json({
@@ -49,7 +48,7 @@ exports.getAllDesigners = async (req, res) => {
 };
 
 exports.getDesignerById = async (req, res) => {
-  console.log("object")
+  console.log("object");
   const exists = await designerExists(req.params.id);
   if (!exists) {
     return res.status(404).json({ message: "Designer does not exist" });
