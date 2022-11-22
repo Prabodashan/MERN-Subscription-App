@@ -21,7 +21,7 @@ const packageInvoicesRoute = require("./routes/PackageInvoicesRoute");
 const domainInvoicesRoute = require("./routes/DomainInvoicesRoute");
 const designerRouter = require("./routes/DesignerRoute");
 const ticketRouter = require("./routes/TicketRoute");
-const customerService = require("./routes/CustomerServiceRoute");
+const customerJob = require("./routes/CustomerJobRoute");
 
 const app = express();
 
@@ -58,7 +58,7 @@ app.use("/api/package-invoices", packageInvoicesRoute);
 app.use("/api/domain-invoices", domainInvoicesRoute);
 app.use("/api/designer", designerRouter);
 app.use("/api/ticket", ticketRouter);
-app.use("/api/customer-service", customerService);
+app.use("/api/customer-service", customerJob);
 
 //listen
 const port = process.env.PORT || 3300;

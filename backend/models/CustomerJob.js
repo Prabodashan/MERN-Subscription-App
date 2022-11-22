@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 // Questions
-const customerServiceSchema = mongoose.Schema({
+const customerJobSchema = mongoose.Schema({
   customerJobId: {
     type: String,
     required: true,
@@ -32,4 +32,4 @@ const customerServiceSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("CustomerService", customerServiceSchema);
+module.exports = mongoose.model("CustomerJob", customerJobSchema);

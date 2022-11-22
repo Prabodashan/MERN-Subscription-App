@@ -1,7 +1,7 @@
-const CustomerService = require("../models/CustomerService");
+const CustomerJob = require("../models/CustomerJob");
 
-exports.createCustomerService = async (req, res) => {
-  const exists = await customerServiceExists(req.body.customerServiceId);
+exports.createCustomerJob = async (req, res) => {
+  const exists = await customerJobExists(req.body.customerJobId);
   if (exists) {
     return res
       .status(409)
@@ -10,7 +10,7 @@ exports.createCustomerService = async (req, res) => {
 
   try {
     const {
-      customerServiceId,
+      customerJobId,
       orderId,
       customerWebsiteId,
       designerId,
@@ -19,8 +19,8 @@ exports.createCustomerService = async (req, res) => {
       createdBy,
     } = req.body;
 
-    const customerService = await new CustomerService({
-      customerServiceId,
+    const customerJob = await new CustomerJob({
+      customerJobId,
       orderId,
       customerWebsiteId,
       designerId,
@@ -30,82 +30,82 @@ exports.createCustomerService = async (req, res) => {
     }).save();
 
     return res.json({
-      customerService,
+      customerJob,
     });
   } catch (err) {
     console.log(err);
   }
 };
 
-exports.getAllCustomerServices = async (req, res) => {
+exports.getAllCustomerJobs = async (req, res) => {
   console.log("get all");
-  const customerServices = await CustomerService.find();
+  const customerJobs = await CustomerJob.find();
   try {
     return res.json({
-      customerServices,
+      customerJobs,
     });
   } catch (err) {
     console.log(err);
   }
 };
 
-exports.getCustomerServiceById = async (req, res) => {
+exports.getCustomerJobById = async (req, res) => {
   console.log("object");
-  const exists = await customerServiceExists(req.params.id);
+  const exists = await customerJobExists(req.params.id);
   if (!exists) {
     return res.status(404).json({ message: "Customer service does not exist" });
   }
-  const customerService = await CustomerService.findOne({
-    customerServiceId: req.params.id,
+  const customerJob = await CustomerJob.findOne({
+    customerJobId: req.params.id,
   });
   try {
     return res.json({
-      customerService,
+      customerJob,
     });
   } catch (err) {
     console.log(err);
   }
 };
 
-exports.deleteCustomerService = async (req, res) => {
-  const exists = await customerServiceExists(req.params.id);
+exports.deleteCustomerJob = async (req, res) => {
+  const exists = await customerJobExists(req.params.id);
   if (!exists) {
     return res.status(404).json({ message: "Customer service does not exist" });
   }
-  const customerService = await CustomerService.deleteOne({
-    customerServiceId: req.params.id,
+  const customerJob = await CustomerJob.deleteOne({
+    customerJobId: req.params.id,
   });
   try {
     return res.json({
-      customerService,
+      customerJob,
     });
   } catch (err) {
     console.log(err);
   }
 };
 
-exports.updateCustomerService = async (req, res) => {
-  const exists = await customerServiceExists(req.params.id);
+exports.updateCustomerJob = async (req, res) => {
+  const exists = await customerJobExists(req.params.id);
   if (!exists) {
     return res.status(404).json({ message: "Customer service does not exist" });
   }
   try {
-    const customerService = await CustomerService.findOneAndUpdate(
-      { customerServiceId: req.params.id },
+    const customerJob = await CustomerJob.findOneAndUpdate(
+      { customerJobId: req.params.id },
       {
         $set: req.body,
       }
     );
     return res.json({
-      customerService,
+      customerJob,
     });
   } catch (err) {
     console.log(err);
   }
 };
 
-customerServiceExists = async (req, res) => {
-  const value = await CustomerService.findOne({ customerServiceId: req });
+customerJobExists = async (req, res) => {
+  const value = await CustomerJob.findOne({ customerJobId: req });
   if (value) {
     return true;
   } else {
