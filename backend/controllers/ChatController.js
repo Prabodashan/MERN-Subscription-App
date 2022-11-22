@@ -1,4 +1,3 @@
-const { findOne, updateOne } = require("../models/Chat");
 const ChatModel = require("../models/Chat");
 
 exports.getChat = async (req, res) => {
