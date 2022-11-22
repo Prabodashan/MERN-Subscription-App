@@ -9,7 +9,7 @@ exports.createDesigner = async (req, res) => {
   try {
     const {
       designerId,
-      fristName,
+      firstName,
       lastName,
       emailAddress,
       phoneNumber,
@@ -19,7 +19,7 @@ exports.createDesigner = async (req, res) => {
 
     const designer = await new Designer({
       designerId,
-      fristName,
+      firstName,
       lastName,
       emailAddress,
       phoneNumber,
