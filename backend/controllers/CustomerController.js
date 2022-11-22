@@ -88,7 +88,6 @@ exports.deleteCustomer = async (req, res) => {
       return res.status(404).json({ message: "Customer not found" });
     }
     const customer = await customerSchema.findOneAndDelete({ _id: customerId });
-    console.log(customer.firstName);
     return res
       .status(200)
       .json({
